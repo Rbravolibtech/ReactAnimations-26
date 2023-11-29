@@ -1,4 +1,5 @@
 import { useContext, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import { ChallengesContext } from '../store/challenges-context.jsx';
 import ChallengeItem from './ChallengeItem.jsx';
@@ -38,21 +39,30 @@ export default function Challenges() {
       <ChallengeTabs
         challenges={filteredChallenges}
         onSelectType={handleSelectType}
-        selectedType={selectedType}
-      >
+        selectedType={selectedType} >
+
+          <AnimatePresence mode="wait">
         {displayedChallenges.length > 0 && (
-          <ol className="challenge-items">
+          <motion.ol
+          key="list"
+          exit={{y: -30, opacity: 0}} 
+          className="challenge-items">
+           
+            <AnimatePresence>
             {displayedChallenges.map((challenge) => (
               <ChallengeItem
-                key={challenge.id}
-                challenge={challenge}
-                onViewDetails={() => handleViewDetails(challenge.id)}
-                isExpanded={expanded === challenge.id}
+              key={challenge.id}
+              challenge={challenge}
+              onViewDetails={() => handleViewDetails(challenge.id)}
+              isExpanded={expanded === challenge.id}
               />
             ))}
-          </ol>
+            </AnimatePresence>
+          </motion.ol>
         )}
-        {displayedChallenges.length === 0 && <p>No challenges found.</p>}
+        
+        {displayedChallenges.length === 0 && <motion.p key="fallback" initial={{opacity: 0, y: -20}} animate={{opacity:1, y: 0}} exit={{opacity: 0, y: -20}}>No challenges found.</motion.p>}
+        </AnimatePresence>
       </ChallengeTabs>
     </div>
   );
