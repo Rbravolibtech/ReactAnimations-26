@@ -8,8 +8,8 @@ export default function Modal({ title, children, onClose }) {
       <div className="backdrop" onClick={onClose} />
       <motion.dialog
       variants={{
-        hidden: {opacity: 0, y: -30},
-        visible: {opacity: 1, y: 0}
+        hidden: {opacity: 0, y: -30, transition: {duration:1}},
+        visible: {opacity: 1, y: 0, transition: {duration:1}}
       }}
       initial="hidden"
       animate="visible"
